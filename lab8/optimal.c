@@ -57,7 +57,7 @@ void main()
 						{
 							++future[k];
 						}
-						if(pages[j] == filled[k])
+						else
 						break;
 					}
 				}
