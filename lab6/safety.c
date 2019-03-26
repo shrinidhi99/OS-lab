@@ -39,72 +39,74 @@ int p;
 int found = 0;
 void safe()
 {
+	// initializing work = available
 	for(i=0;i<m;i++)
 	work[i] = available[i];
+	// assigning finish as false to each process
 	for(i=0;i<n;i++)
 	finish[i] = 0; // false
 	
-	while (count < n) 
+		while (count < n) 
     	{ 
-        
+			
         	for (p = 0; p < n; p++) 
         	{ 
-        	    	if(count == P)
+        	   	if(count == P)
 		    	{
-			++n;
-			printf("Enter number of resources of each type:\n");
-			scanf("%d",&available[n-1]);
-			printf("Enter maximum demand of this process:\n");
-			for(j=0;j<m;j++)
-			{
-				scanf("%d",&max[n-1][j]);
-			}
-			printf("Enter number of processes of each type currently allocated to this process:\n");
-			for(j=0;j<m;j++)
-			{
-				scanf("%d",&allocation[n-1][j]);
-			}
-			for(j=0;j<m;j++)
-			{
-				need[n-1][j] = max[n-1][j] - allocation[n-1][j];
-			}
+					++n;
+					printf("Enter number of resources of each type:\n");
+					scanf("%d",&available[n-1]);
+					printf("Enter maximum demand of this process:\n");
+					for(j=0;j<m;j++)
+					{
+						scanf("%d",&max[n-1][j]);
+					}
+					printf("Enter number of processes of each type currently allocated to this process:\n");
+					for(j=0;j<m;j++)
+					{
+						scanf("%d",&allocation[n-1][j]);
+					}
+					for(j=0;j<m;j++)
+					{
+						need[n-1][j] = max[n-1][j] - allocation[n-1][j];
+					}
 	        	}
-            if (finish[p] == 0) 
-            { 
+            	if (finish[p] == 0) 
+            	{ 
                 
-                for (j = 0; j < m; j++) 
-                    if (need[p][j] > work[j]) 
-                        break; 
+            	    for (j = 0; j < m; j++) 
+                	    if (need[p][j] > work[j]) 
+                	        break; 
   
                 
-                if (j == m) 
-                { 
-                    
-                    for (k = 0 ; k < m ; k++) 
-                        work[k] += allocation[p][k]; 
+                	if (j == m) 
+                	{ 
+						
+                    	for (k = 0 ; k < m ; k++) 
+                    	    work[k] += allocation[p][k]; 
   
                     
-                    safeSeq[count++] = p;
-  
-                  
-                    finish[p] = 1; 
-  
-                    found = 1; 
-                } 
-            } 
-        } 
+                    	safeSeq[count++] = p;
+	
+                        
+    	                finish[p] = 1; 
+	
+    	                found = 1; 
+        	        } 
+            	} 
+        	} 
   
         
-        if (found == 0) 
-        { 
-            printf("System is not in safe state"); 
-            break; 
-        }
-    }
+        	if (found == 0) 
+        	{ 
+            	printf("System is not in safe state"); 
+            	break; 
+        	}
+    	}
 
-    printf("System is in safe state.\nSafe sequence is: "); 
-    for (i = 0; i < n ; i++) 
-        printf("%d ",safeSeq[i]); 
+    	printf("System is in safe state.\nSafe sequence is: "); 
+    	for (i = 0; i < n ; i++) 
+        	printf("%d ",safeSeq[i]); 
 }
 void main()
 {
