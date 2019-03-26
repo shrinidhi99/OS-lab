@@ -19,7 +19,7 @@ void main()
 		BNo[i] = 101;
 	}
 	
-	// algorithm beings
+	// algorithm begins
 	printf("PNo.\tProcess Size\tBlockNo.\n");	
 	for(i=0;i<N;i++)
 	{
