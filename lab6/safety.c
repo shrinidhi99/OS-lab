@@ -1,5 +1,39 @@
 #include<stdio.h>
 #include<stdlib.h>
+/*
+	Safety algorithm
+     1) Let Work and Finish be vectors of length ‘m’ and ‘n’ respectively.
+    Initialize: Work = Available
+    Finish[i] = false; for i=1, 2, 3, 4….n
+
+    2) Find an i such that both
+    a) Finish[i] = false
+    b) Needi <= Work
+    if no such i exists goto step (4)
+
+    3) Work = Work + Allocation[i]
+    Finish[i] = true
+    goto step (2)
+
+    4) if Finish [i] = true for all i
+    then the system is in a safe state 
+
+	Resource request algorithm
+	
+
+    1) If Requesti <= Needi
+    Goto step (2) ; otherwise, raise an error condition, since the process has exceeded its maximum claim.
+
+    2) If Requesti <= Available
+    Goto step (3); otherwise, Pi must wait, since the resources are not available.
+
+    3) Have the system pretend to have allocated the requested resources to process Pi by modifying the state as
+    follows:
+    Available = Available – Requesti
+    Allocationi = Allocationi + Requesti
+    Needi = Needi– Requesti
+
+*/
 int i,j,k,m,n,available[100],max[100][100],allocation[100][100],need[100][100],work[100],finish[100],safeSeq[100],count=0,P;
 int p;
 int found = 0;
@@ -11,12 +45,12 @@ void safe()
 	finish[i] = 0; // false
 	
 	while (count < n) 
-    { 
+    	{ 
         
-        for (p = 0; p < n; p++) 
-        { 
-            if(count == P)
-		{
+        	for (p = 0; p < n; p++) 
+        	{ 
+        	    	if(count == P)
+		    	{
 			++n;
 			printf("Enter number of resources of each type:\n");
 			scanf("%d",&available[n-1]);
@@ -34,7 +68,7 @@ void safe()
 			{
 				need[n-1][j] = max[n-1][j] - allocation[n-1][j];
 			}
-		}
+	        	}
             if (finish[p] == 0) 
             { 
                 
