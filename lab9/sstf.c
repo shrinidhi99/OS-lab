@@ -23,9 +23,9 @@ void sstf(int head,int N)
 		}
 		// moving the head
 		if(A[k].val < head)
-		printf("Moving left\n");
+		printf("\n<-- Moving left\n");
 		else
-		printf("Moving right\n");
+		printf("\nMoving right -->\n");
 		head = A[k].val;
 		printf("%d ",head);
 		A[k].accessed = 1;
