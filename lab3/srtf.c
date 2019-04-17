@@ -1,116 +1,118 @@
-// shortest job first algorithm
 #include<stdio.h>
-#include<stdlib.h>
-struct node
-{
-	int no;
-	int AT;
-	int BT;
-	int CT;
-	int WT;
-	int TAT;
-}P[100],p[100];
-int sorted(int junk[], int k)
-{
-	int i,min=0;
-	for(i=0;i<k;i++)
-	{
-		if(P[junk[min]].BT>=P[junk[i]].BT)
-		min = i;
-	} 
-	return junk[min];
-}	
-void completion(int at[],int bt[],int ct[],int N)
-{
-	int i;
-	ct[0] = at[0]+bt[0];
-	for(i=1;i<N;i++)
-	{
-		ct[i] = ct[i-1] + bt[i];
-	}
-}
-void turnaround(int at[],int ct[],int tat[],int N)
-{
-	int i;
-	for(i=0;i<N;i++)
-	tat[i] = ct[i] - at[i];
-} 
-void waiting(int wt[],int tat[],int bt[],int N)
-{
-	int i;
-	for(i=0;i<N;i++)
-	wt[i] = tat[i] - bt[i];
-}
+struct process{
+	int pid,at,visited,bt,ct,tat,wt;
+};
+
 void main()
 {
-	int i,N,j,CPUidle,time,k,junk[100],min,n=0,at[100],bt[100],NO[100],wt[100],ct[100],tat[100];
-	printf("Enter the number of processes: ");
-	scanf("%d",&N);
-	for(i=1;i<=N;i++)
-	{
-		P[i].no = i;
-		printf("Enter Arrival time and Burst time of process %d: ",i);
-		scanf("%d %d",&P[i].AT,&P[i].BT);
+	int i =0, n,j;
+	int time=0;
+
+	printf("Enter number of processes: \n");
+	scanf("%d", &n);
+
+	struct process p[10];
+	while(i<n){
+		p[i].visited = 0;
+		p[i].pid = i;
+		printf(" the arrival time of %d process: \n", i );
+		scanf("%d", &p[i].at);
+		printf("Enter burst time of %d process \n:", i);
+		scanf("%d",&p[i].bt);
+		i++;
 	}
-	//CPUidle = P[0].AT; // basically before the first process arrives, CPU is idle
-	//printf("The CPU remains idle for %d seconds.\n",CPUidle);	
-	j=P[1].AT;	
-	printf("hi\n");	
-	for(i=1;i<=N;i++)
-	j = j + P[i].BT;
-	min=0;
-	for(time=1;time<=j;)
-	{
-		k=0;
-		for(i=1;i<=N;i++)
+	struct process temp;
+	for(i=0;i<n;i++)
+	{	for ( j = 0; j<n-1;j++)
 		{
-			if(P[i].AT<=time && P[i].BT!=0)
+			if(p[j].at > p[j+1].at)
 			{
-				junk[k] = i;
-				k++;
+				temp = p[j];
+				p[j] = p[j+1];
+				p[j+1] = temp;
 			}
 		}
-		if(k>0)
+	}
+	int temp_bt[10];
+	i = 0;
+	while(i<n){
+		temp_bt[i] = p[i].bt;
+		i++;
+	}
+	
+
+	int count = 0;
+	int flag = 1;
+	i=0;
+	while(flag)
+	{	
+		int j;
+		int small_index=-1;
+		struct process small;
+		small.bt=32000;
+		for(j=0;j<n;j++){
+			if(p[j].at <= time && p[j].visited == 0)
+			{	
+				if(p[j].bt <small.bt){
+					small_index = j;
+					small = p[j];
+				}
+			}
+			
+		}
+		if(small_index==-1)
 		{
-			min = sorted(junk,k);
-			time = time + 1;
-			at[n]=P[min].AT;
-			bt[n]=P[min].BT;
-			NO[n]=P[min].no;
-			n++;
-			P[min].BT= P[min].BT - 1;
-			min=0;
+			for(i=0;i<n;i++)
+			{
+				if(p[i].at>time && p[i].visited==0)
+				{
+					small_index=i;
+					break;
+				}
+			}
+		}
+		i = small_index;
+
+		if(p[i].at > time)
+		{
+			printf("The process was idle from %d to %d\n",time,p[i].at );
+			time  = p[i].at;
+			
 		}
 		else
-		time = time + 1;	
+		{	p[i].bt--;
+			time = time + 1;
+				
+			if (p[i].bt == 0)
+			{
+				
+				p[i].visited =1;	
+				p[i].ct = time;
+				p[i].tat = p[i].ct - p[i].at;
+				p[i].wt = p[i].tat - temp_bt[i];
+			}
+				
+		}
+
+		int k,count=0;
+		for (k = 0; k < n; ++k)
+			if ( p[k].visited == 1)	
+				count++;
+		if (count == n)
+			flag = 0;
+
 	}
-	//for(i=0;i<N;i++)
-	//{
-	//	printf("%d\t%d\t%d\n",NO[i],at[i],bt[i]);
-	//}
-	
-	completion(at,bt,ct,N);
-	turnaround(at,ct,tat,N);
-	waiting(wt,tat,bt,N);
-	printf("Timeline as per CT:\n");	
-	for(i=0;i<n;i++)	
-	printf("P%d|",NO[i]);
-	printf("\nProcess\tAT\tBT\tCT\tTAT\tWT\n");
-	for(i=0;i<n;i++)
+	printf("pid 	A.T 	B.T 	C.T 	T.A.T 	W.T\n");
+	int avg_tat=0,avg_ct=0,avg_wt=0;
+	for ( i = 0; i < n; ++i)
 	{
-		printf("%d\t%d\t%d\t%d\t%d\t%d\n",NO[i],at[i],bt[i],ct[i],tat[i],wt[i]);
+			printf("%d\t%d\t%d\t%d\t%d\t%d\n", p[i].pid, p[i].at, temp_bt[i],p[i].ct,p[i].tat,p[i].wt);
+			avg_tat+=p[i].tat;
+			avg_ct+=p[i].ct;
+			avg_wt+=p[i].wt;
 	}
-	int average_WT = 0;
-	int average_TAT = 0;
-	for(i=0;i<n;i++)
-	{
-		average_WT += wt[i];
-		average_TAT += tat[i];
-	}
-	average_WT = (average_WT)/(N);
-	average_TAT = (average_TAT)/(N);
-	printf("Average waiting time = %d.\n",average_WT);
-	printf("Average turnaround time = %d.\n",average_TAT);
+
+	printf("\nThe average C.T: %f\n",(float)(avg_ct/(float)n));
+	printf("The average T.A.T: %f\n",(float)(avg_tat/(float)n));
+	printf("The average W.T: %f\n",(float)(avg_wt/(float)n));
 }
-
-

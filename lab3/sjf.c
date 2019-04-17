@@ -54,8 +54,7 @@ void main()
 	}
 	//CPUidle = P[0].AT; // basically before the first process arrives, CPU is idle
 	//printf("The CPU remains idle for %d seconds.\n",CPUidle);	
-	j=P[1].AT;	
-	printf("hi\n");	
+	j=P[1].AT;		
 	for(i=1;i<=N;i++)
 	j = j + P[i].BT;
 	min=0;
@@ -84,10 +83,10 @@ void main()
 		else
 		time = time + 1;	
 	}
-	for(i=0;i<N;i++)
-	{
-		printf("%d\t%d\t%d\n",NO[i],at[i],bt[i]);
-	}
+	//for(i=0;i<N;i++)
+	//{
+	//	printf("%d\t%d\t%d\n",NO[i],at[i],bt[i]);
+	//}
 	completion(at,bt,ct,n);
 	turnaround(at,ct,tat,n);
 	waiting(wt,tat,bt,n);
