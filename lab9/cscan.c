@@ -50,7 +50,7 @@ void main()
 				break;
 			}
 		}
-		printf("%d\n%d\n",head,A[k].val);
+		printf("%d\n%d\t",head,A[k].val);
 		A[k].accessed = 1;
 		head = A[k].val;
 		seek += A[k].val;
@@ -59,19 +59,19 @@ void main()
 		{
 			if(A[i].accessed == 0)
 			{
-				printf("%d\n",A[i].val);
+				printf("%d\t",A[i].val);
 				A[i].accessed = 1;
 				seek += A[i].val;
 			}
 		}
 		//seek += (size-1-A[N-1].val);
 		printf("\nReached the rightmost end of the cylinder.\n");
-		printf("\nReached the leftmost end of the cylinder.\n");		
+		printf("\nJumped the leftmost end of the cylinder.\n");		
 		for(i=0;i<N;i++)
 		{
 			if(A[i].accessed == 0)
 			{
-				printf("%d\n",A[i].val);
+				printf("%d\t",A[i].val);
 				A[i].accessed = 1;
 				seek += A[i].val;
 			}		
@@ -92,7 +92,7 @@ void main()
 				break;
 			}
 		}
-		printf("%d\n%d\n",head,A[k].val);
+		printf("%d\t%d\t",head,A[k].val);
 		A[k].accessed = 1;
 		head = A[k].val;
 		seek += A[k].val;
@@ -100,19 +100,19 @@ void main()
 		{
 			if(A[i].accessed == 0)
 			{
-				printf("%d\n",A[i].val);
+				printf("%d\t",A[i].val);
 				A[i].accessed = 1;
 				seek += A[i].val;
 			}
 		}
 		//seek += (A[0].val - 0);
 		printf("\nReached the leftmost end of the cylinder.\n");
-		printf("\nReached the rightmost end of the cylinder.\n");		
+		printf("\nJumped to the rightmost end of the cylinder.\n");		
 		for(i=N-1;i>=0;i--)
 		{
 			if(A[i].accessed == 0)
 			{
-				printf("%d\n",A[i].val);
+				printf("%d\t",A[i].val);
 				A[i].accessed = 1;
 				seek += A[i].val;
 			}
@@ -120,5 +120,5 @@ void main()
 		//seek += (size-1-A[N-1].val);
 		
 	}
-	printf("Total = %d.\n",seek);
+	printf("\nTotal seek count = %d.\n",seek);
 }
